@@ -1,0 +1,2 @@
+# Ignore KiCad backups
+Schematics/**/*-backups
