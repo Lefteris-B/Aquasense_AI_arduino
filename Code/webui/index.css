@@ -1,0 +1,26 @@
+.card {
+    display: grid;
+    grid-template-areas:
+        'measurement measurement'
+        'value action'
+        'meter meter';
+    align-items: center;
+    gap: 0 0.1% ;
+}
+
+.action {
+    grid-area: action;
+    
+}
+
+.measurement {
+    grid-area: measurement;
+}
+
+.value {
+    grid-area: value;
+}
+
+.meter {
+    grid-area: meter;
+}
