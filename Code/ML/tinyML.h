@@ -18,4 +18,7 @@ Eloquent::TF::Sequential<TF_NUM_OPS, ARENA_SIZE> tf;
 
 void ml_init(void);
 
+float ml_predict(float *input);
+unsigned int ml_predict_latency(void);
+
 #endif
