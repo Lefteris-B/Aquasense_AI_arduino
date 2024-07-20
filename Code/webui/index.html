@@ -11,35 +11,53 @@
 </head>
 
 <body>
-    <div id="stats" >
+    <div id="stats">
         <div class="card">
             Temperature:
-            <h1 class="value" id="temperature">20 C</h1>
-            <!-- <meter class="meter" min="-20" max="50" low="0" optimum="20" high="30" value="30"></meter> -->
+            <output class="value" id="temperature">20 C</output>
         </div>
-
-        <div class="card">Humidity:
-            <h1 class="value" id="humidity">70%</h1>
-            <form class="action" method="GET">
-                Water (in mm):
-                <button type="submit" name="water" value="5">5</button>
-                <button type="submit" name="water" value="10">10</button>
-                <button type="submit" name="water" value="15">15</button>
+        <div class="card">
+            Humidity:
+            <form method="GET">
+                <output class="value" id="humidity">70%</output>
+                <label class="action spacer">
+                    Water (in mm):
+                    <button class="btn btn-primary" type="submit" name="water" value="5">5</button>
+                    <button class="btn btn-primary" type="submit" name="water" value="10">10</button>
+                    <button class="btn btn-primary" type="submit" name="water" value="15">15</button>
+                </label>
             </form>
         </div>
         <div class="card">Wind:
-            <h1 class="value" id="wind">8 m/s</h1>
+            <output class="value">8 m/s</output>
         </div>
-        <div class="card">Light Level:
-            <h1 class="value" id="wind">100 lux</h1>
-            <form class="action" oninput="submit()" method="GET">
-                <label>
+        <div class="card">
+            Light Level:
+            <form  method="GET" oninput="submit()">
+                <output class="value">100 lux</output>
+                <label class="action spacer">
                     Cover
                     <input type="checkbox" name="cover" id="cover">
                 </label>
             </form>
         </div>
     </div>
+    <details>
+        <summary>
+            Settings
+        </summary>
+        <form method="get">
+            <label>
+                Network name:
+                <input type="text" name="ssid" id="ssid">
+            </label>
+            <label>
+                Location:
+                <input type="text" name="location" id="location">
+            </label>
+        </form>
+    </details>
+
 </body>
 
 </html>
