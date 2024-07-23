@@ -5,6 +5,8 @@
 #ifndef TINYML_H
 #define TINYML_H
 
+#include <stdint.h>
+
 /* Load the required libraries for TinyML */
 #include <tflm_esp32.h>
 #include <eloquent_tinyml.h>
@@ -25,7 +27,7 @@ void ml_init(void) {
   }
 }
 
-float ml_predict(float *input) {
+float ml_predict(uint8_t *input) {
   /* Predict and check for errors */
   if (!tf.predict(input).isOk()) {
     Serial.println(tf.exception.toString());
@@ -34,7 +36,7 @@ float ml_predict(float *input) {
   return tf.output(0);
 }
 
-unsigned int ml_predict_time(void) {
+uint32_t ml_predict_time(void) {
     return tf.benchmark.microseconds();
 }
 
