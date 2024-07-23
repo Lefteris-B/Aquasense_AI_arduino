@@ -18,6 +18,11 @@
 #define ARENA_SIZE 5000
 Eloquent::TF::Sequential<TF_NUM_OPS, ARENA_SIZE> tf;
 
+/* Functions */
+static inline float sigmoid_function(float input) {
+  return (1 / (1 + exp(-input)));
+}
+
 void ml_init(void) {
   Serial.println("__TINYML_INIT__");
 
@@ -27,13 +32,23 @@ void ml_init(void) {
   }
 }
 
-float ml_predict(uint8_t *input) {
+uint8_t ml_predict(uint8_t *input) {
+  /* Normalize values with minmax algorithm */
+  float norm[3] = {0};
+  norm[0] = (input[0] - 0)/(10 - 0);  // Wind
+  norm[1] = (input[1] - 0)/(2 - 0);   // Weather
+  norm[2] = (input[2] - 0)/(10 - 0);  // Luminance
+
   /* Predict and check for errors */
   if (!tf.predict(input).isOk()) {
     Serial.println(tf.exception.toString());
   }
 
-  return tf.output(0);
+  /* Apply sigmoid function */
+  output = sigmoid_function(tf.output(0));
+
+  /* Return either 0 or 1 */
+  return round(output);
 }
 
 uint32_t ml_predict_time(void) {
