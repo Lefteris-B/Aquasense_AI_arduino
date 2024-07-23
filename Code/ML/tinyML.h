@@ -7,12 +7,12 @@
 
 #include <stdint.h>
 
+/* Model */
+#include "model.h"
+
 /* Load the required libraries for TinyML */
 #include <tflm_esp32.h>
 #include <eloquent_tinyml.h>
-
-/* Model */
-#include "model.h"
 
 /* Instantiate model loader */
 #define ARENA_SIZE 5000
