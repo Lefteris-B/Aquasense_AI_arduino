@@ -26,6 +26,10 @@ static inline float sigmoid_function(float input) {
 void ml_init(void) {
   Serial.println("__TINYML_INIT__");
 
+  tf.setNumInputs(3);
+  tf.setNumOutputs(1);
+  tf.resolver.AddFullyConnected();
+
   /* Initialize model loader and check for errors. */
   while (!tf.begin(model).isOk()) {
     Serial.println(tf.exception.toString());
