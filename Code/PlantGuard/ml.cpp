@@ -4,7 +4,15 @@ static inline float sigmoid_function(float input) {
   return (1 / (1 + exp(-input)));
 }
 
-void ml_init(void) {
+ML::ML() {
+  fail = false;
+
+  if (ml_init() == false) {
+    Serial.println("ML: Initialization failure");
+  }
+}
+
+bool ML::ml_init(void) {
   Serial.println("__TINYML_INIT__");
 
   /* Structural information */
@@ -13,12 +21,18 @@ void ml_init(void) {
   tf.resolver.AddFullyConnected();
 
   /* Initialize model loader and check for errors. */
-  while (!tf.begin(model).isOk()) {
-    Serial.println(tf.exception.toString());
+  if (!tf.begin(model).isOk()) {
+    fail = true;
   }
+
+  return !(fail);
 }
 
-uint8_t ml_predict(uint8_t *input) {
+uint8_t ML::ml_predict(uint8_t *input) {
+  if (fail == true) {
+    return 0; // Don't move if something is off
+  }
+
   /* Normalize values with minmax algorithm */
   float norm[3] = {0};
   norm[0] = (input[0] - 0)/(10 - 0);  // Wind
@@ -26,17 +40,17 @@ uint8_t ml_predict(uint8_t *input) {
   norm[2] = (input[2] - 0)/(10 - 0);  // Luminance
 
   /* Predict and check for errors */
-  if (!tf.predict(input).isOk()) {
-    Serial.println(tf.exception.toString());
+  if (!tf.predict(norm).isOk()) {
+    return 0; // Don't move if something is off
   }
 
   /* Apply sigmoid function */
-  output = sigmoid_function(tf.output(0));
+  float output = sigmoid_function(tf.output(0));
 
   /* Return either 0 or 1 */
   return round(output);
 }
 
-uint32_t ml_predict_time(void) {
+uint32_t ML::ml_predict_time(void) {
     return tf.benchmark.microseconds();
 }

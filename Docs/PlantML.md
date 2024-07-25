@@ -45,21 +45,22 @@ of wind velocity fluctuations and emerging meteorological conditions.
 
 **Example use**
 ```
-#include <stdint.h>
 #include "ml.h"
+
+ML ml;
 
 uint8_t t0[3] = {10U, 0U, 0U};  /* Outputs 1*/
 
 void setup() {
   Serial.begin(9600);
-  ml_init();
+  ml.ml_init();
 }
 
 void loop() {
-  uint8_t output = ml_predict(t0);
+  uint8_t output = ml.ml_predict(t0);
   Serial.println(output);
 
   Serial.print("Inference time (us): ");
-  Serial.println(ml_predict_time());
+  Serial.println(ml.ml_predict_time());
 }
 ```
