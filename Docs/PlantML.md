@@ -46,7 +46,7 @@ of wind velocity fluctuations and emerging meteorological conditions.
 **Example use**
 ```
 #include <stdint.h>
-#include "ML/tinyML.h"
+#include "ml.h"
 
 uint8_t t0[3] = {10U, 0U, 0U};  /* Outputs 1*/
 
