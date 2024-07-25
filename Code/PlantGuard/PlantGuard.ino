@@ -4,6 +4,8 @@
 #include "LightSensor.hpp"
 #include "Accelerometer.hpp"
 
+Accelerometer accel;
+
 void setup() {
   Serial.begin(115200);
   Wire.begin(13, 15);

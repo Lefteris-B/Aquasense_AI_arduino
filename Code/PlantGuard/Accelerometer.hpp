@@ -44,6 +44,4 @@ private:
   int count;
 };
 
-extern Accelerometer accel;
-
 #endif

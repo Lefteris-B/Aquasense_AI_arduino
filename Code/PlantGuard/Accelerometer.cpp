@@ -1,8 +1,6 @@
 #include "Accelerometer.hpp"
 #include <Arduino.h>
 
-Accelerometer accel;
-
 void Accelerometer::task(void *param) {
   Accelerometer *accel = (Accelerometer *) param;
 
