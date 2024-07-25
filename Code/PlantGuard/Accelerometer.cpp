@@ -1,4 +1,5 @@
 #include "Accelerometer.hpp"
+#include <Arduino.h>
 
 Accelerometer accel;
 
@@ -8,18 +9,18 @@ void Accelerometer::task(void *param) {
   while (true) {
     accel->index = (accel->index + 1) % accel->count;
     accel->measurements[accel->index] = accel->read();
-    delay(accel->dt);
+    delay(100);
   }
 }
 
-void Accelerometer::begin(int count, int dt) {
-  this->adxl = ADXL345();
+void Accelerometer::begin(int count) {
+  this->adxl = ADXL345_WE();
   this->count = count;
-  this->dt = dt;
 
-  adxl.powerOn();
-  adxl.setRangeSetting(2);
-
+  adxl.init();
+  adxl.setDataRate(ADXL345_DATA_RATE_12_5);
+  adxl.setRange(ADXL345_RANGE_2G);
+  
   double first = read();
   measurements = (double *) malloc(count * sizeof(double));
   for (int i = 0; i < count; i++) {
@@ -27,17 +28,12 @@ void Accelerometer::begin(int count, int dt) {
   }
   index = -1;
 
-  xTaskCreate(Accelerometer::task, "Accelerometer", 2048, this, 1, NULL);
+  xTaskCreate(Accelerometer::task, "Acceleration", 2048, this, 1, NULL);
 }
 
 double Accelerometer::read() {
-  int x, y, z;
-  adxl.readAccel(&x, &y, &z);
-  
-  double gx = x / 256.0;
-  double gy = y / 256.0;
-  double gz = z / 256.0;
-  return sqrt(gx*gx + gy*gy + gz*gz);
+  xyzFloat g = adxl.getGValues();
+  return sqrt(g.x*g.x + g.y*g.y + g.z*g.z);
 }
 
 double Accelerometer::average() {

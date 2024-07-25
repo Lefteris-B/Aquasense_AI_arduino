@@ -1,7 +1,7 @@
 #ifndef ACCELEROMETER_HPP
 #define ACCELEROMETER_HPP
 
-#include <SparkFun_ADXL345.h>
+#include <ADXL345_WE.h>
 
 class Accelerometer {
 public:
@@ -11,9 +11,8 @@ public:
    * This spawns a task that continuously measures the acceleration and keeps the last `count` measurements. These measurements are used to extract statistics about the acceleration.
    * 
    * @param count How many measurements should be kept.
-   * @param dt How much time (in milliseconds) should pass between each measurement.
    */
-  void begin(int count, int dt = 100);
+  void begin(int count);
 
   /**
    * Reads the magnitude of the acceleration from the sensor.
@@ -39,11 +38,10 @@ private:
    */
   static void task(void *);
 
-  ADXL345 adxl;
+  ADXL345_WE adxl;
   double *measurements;
   int index;
   int count;
-  int dt;
 };
 
 extern Accelerometer accel;
