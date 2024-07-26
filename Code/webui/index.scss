@@ -1,0 +1,42 @@
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/variables-dark";
+@import "../node_modules/bootstrap/scss/maps";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/root";
+@import "../node_modules/bootstrap/scss/reboot";
+@import "../node_modules/bootstrap/scss/_card.scss";
+
+body {
+    --bs-body-bg: none;
+    margin: 0.75rem;
+}
+
+body::before {
+    background: url(floral.svg),#dfe0ce;
+    background-position: top;
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0.7;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+}
+
+.value {
+    font-size: 2.5rem;
+}
+
+.action {
+    margin-left: 1rem;
+}
+
+.spacer {
+    margin-bottom: 0.5rem;
+}
+
+.card {
+    --bs-card-bg: none
+}
