@@ -19,6 +19,7 @@ void Webserver::wifi_init(){
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print(".");
+    delay(200);
   }
   Serial.println(WiFi.localIP());
 }
