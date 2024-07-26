@@ -1,3 +1,6 @@
+#ifndef WEBSERVER_HPP
+#define WEBSERVER_HPP
+
 class Webserver {
 public:
   Webserver();
@@ -7,3 +10,5 @@ private:
   void server_init();
   void fs_init();
 };
+
+#endif
