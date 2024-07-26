@@ -4,6 +4,7 @@
 #ifndef ML_H
 #define ML_H
 
+#include <Arduino.h>
 #include <stdint.h>
 
 /* Model */
@@ -24,7 +25,7 @@ public:
   ML();
 
   /**
-    * Executes the ML inference routine
+    * @brief Executes the ML inference routine
     *
     * @param input The input array pointer of type uint8_t that contains the values used for the classifier.
     * @returns Either 1 (Move) or 0 (Don't move) depending on the result of the inference.
@@ -38,26 +39,27 @@ public:
 
 protected:
   /**
-    * Initiates the classification model. This must be run before any other function declared here.
+    * @brief Initiates the classification model. This must be run before any other function declared here.
     * @returns True for success, False for failure.
     */
   bool ml_init(void);
 
   /**
-    * This function applies the sigmoid logistic activation on the input.
+    * @brief This function applies the sigmoid logistic activation on the input.
     * @param input The output float number that has to be activated.
     * @returns The output of the function.
     */
-  float sigmoid_function(float &input);
+  float sigmoid_function(float input);
 
   /**
-    * This function applies the MinMax normalization on the input.
+    * @brief This function applies the MinMax normalization on the input.
     *
-    * Changes are applied directly on the input array.
+    * Changes are applied directly on the output array.
     *
-    * @param input The pointer of the float array that has to be normalized.
+    * @param input The pointer of the uint8_t array that has to be normalized.
+    * @param output The pointer of the float array that will contain the normalized values.
     */ 
-  void minmax_norm(float *input);
+  void minmax_norm(uint8_t *input, float *output);
 
 private:
   /* Model loader instance */

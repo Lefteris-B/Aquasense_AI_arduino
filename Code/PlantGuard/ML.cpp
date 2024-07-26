@@ -1,5 +1,4 @@
 #include "ML.h"
-#include <Arduino.h>
 
 ML::ML() {
   fail = false;
@@ -32,7 +31,7 @@ uint8_t ML::ml_predict(uint8_t *input) {
 
   /* Normalize values with minmax algorithm */
   float norm[3] = {0};
-  minmax_norm(norm);
+  minmax_norm(input, norm);
 
   /* Predict and check for errors */
   if (!tf.predict(norm).isOk()) {
@@ -50,12 +49,12 @@ uint32_t ML::ml_predict_time(void) {
     return tf.benchmark.microseconds();
 }
 
-float ML::sigmoid_function(float &input) {
+float ML::sigmoid_function(float input) {
   return (1 / (1 + exp(-input)));
 }
 
-void ML::minmax_norm(float *input) {
-  norm[0] = (input[0] - 0)/(10 - 0);  // Wind
-  norm[1] = (input[1] - 0)/(2 - 0);   // Weather
-  norm[2] = (input[2] - 0)/(10 - 0);  // Luminance
+void ML::minmax_norm(uint8_t *input, float *output) {
+  output[0] = (input[0] - 0)/(10 - 0);  // Wind
+  output[1] = (input[1] - 0)/(2 - 0);   // Weather
+  output[2] = (input[2] - 0)/(10 - 0);  // Luminance
 }
