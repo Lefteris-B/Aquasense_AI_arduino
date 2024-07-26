@@ -3,10 +3,12 @@
 #include "Cover.hpp"
 #include "LightSensor.hpp"
 #include "MoistureSensor.hpp"
+#include "TemperatureSensor.hpp"
 #include "Accelerometer.hpp"
 
 Accelerometer accel;
 MoistureSensor moisture;
+TemperatureSensor temp;
 
 void setup() {
   Serial.begin(115200);
@@ -18,10 +20,11 @@ void setup() {
   cover.attachSwitch(32, 33);
 
   lightSensor.attach(36, 10000); // 36 = VP
+  temp.attach(39, 10000); // 39 = VN
   moisture.attach(34);
 }
 
 void loop() {
-  Serial.printf("%lf\n", moisture.read());
+  Serial.printf("%lf\n", temp.read());
   delay(100);
 }
