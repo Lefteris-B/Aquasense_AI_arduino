@@ -1,21 +1,21 @@
+#include "Webserver.hpp"
+/* Put your SSID, Password, and IP address details */
+#include "WiFiInfo.h"
+
 #include <WiFi.h>
 #include <AsyncTCP.h>
 #include <SPIFFS.h>
 
-#include "Webserver.hpp"
-/* Put your SSID & Password */
-#include "WifiCreds.hpp"
-
-/* Put IP Address details */
-IPAddress local_ip(192,168,1,254);
-IPAddress gateway(192,168,1,1);
-IPAddress subnet(255,255,255,0);
-
 Webserver::Webserver(): server(80) {}
 
 void Webserver::wifi_init(){
+  IPAddress ip, subnet, gateway;
+  ip.fromString(IP_ADDRESS);
+  subnet.fromString(SUBNET_MASK);
+  gateway.fromString(GATEWAY_ADDRESS);
+  
   WiFi.mode(WIFI_STA);
-  WiFi.config(local_ip, gateway, subnet);
+  WiFi.config(ip, gateway, subnet);
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print(".");
