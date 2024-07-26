@@ -26,6 +26,9 @@ void setup() {
 }
 
 void loop() {
-  Serial.printf("%lf\n", temp.read());
-  delay(100);
+  Serial.printf("Temperature: %.1lf\n", temp.read());
+  Serial.printf("Light: %lf\n", light.read());
+  Serial.printf("Movement: %lf\n", accel.variance());
+  Serial.printf("Moisture: %.3lf\n", moisture.read());
+  delay(500);
 }
