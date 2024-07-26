@@ -1,4 +1,4 @@
-#include "ml.h"
+#include "ML.h"
 
 static inline float sigmoid_function(float input) {
   return (1 / (1 + exp(-input)));
