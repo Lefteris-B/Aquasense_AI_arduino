@@ -26,6 +26,4 @@ private:
   double resistance;
 };
 
-extern LightSensor lightSensor;
-
 #endif

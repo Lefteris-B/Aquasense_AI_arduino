@@ -2,8 +2,6 @@
 
 #include "LightSensor.hpp"
 
-LightSensor lightSensor;
-
 void LightSensor::attach(int pin, double resistance) {
   this->pin = pin;
   this->resistance = resistance;

@@ -9,6 +9,7 @@
 Accelerometer accel;
 MoistureSensor moisture;
 TemperatureSensor temp;
+LightSensor light;
 
 void setup() {
   Serial.begin(115200);
@@ -19,7 +20,7 @@ void setup() {
   cover.attachMotor(16, 17);
   cover.attachSwitch(32, 33);
 
-  lightSensor.attach(36, 10000); // 36 = VP
+  light.attach(36, 10000); // 36 = VP
   temp.attach(39, 10000); // 39 = VN
   moisture.attach(34);
 }
