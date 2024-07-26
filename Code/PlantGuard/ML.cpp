@@ -1,8 +1,5 @@
 #include "ML.h"
-
-static inline float sigmoid_function(float input) {
-  return (1 / (1 + exp(-input)));
-}
+#include <Arduino.h>
 
 ML::ML() {
   fail = false;
@@ -35,9 +32,7 @@ uint8_t ML::ml_predict(uint8_t *input) {
 
   /* Normalize values with minmax algorithm */
   float norm[3] = {0};
-  norm[0] = (input[0] - 0)/(10 - 0);  // Wind
-  norm[1] = (input[1] - 0)/(2 - 0);   // Weather
-  norm[2] = (input[2] - 0)/(10 - 0);  // Luminance
+  minmax_norm(norm);
 
   /* Predict and check for errors */
   if (!tf.predict(norm).isOk()) {
@@ -53,4 +48,14 @@ uint8_t ML::ml_predict(uint8_t *input) {
 
 uint32_t ML::ml_predict_time(void) {
     return tf.benchmark.microseconds();
+}
+
+float ML::sigmoid_function(float &input) {
+  return (1 / (1 + exp(-input)));
+}
+
+void ML::minmax_norm(float *input) {
+  norm[0] = (input[0] - 0)/(10 - 0);  // Wind
+  norm[1] = (input[1] - 0)/(2 - 0);   // Weather
+  norm[2] = (input[2] - 0)/(10 - 0);  // Luminance
 }

@@ -4,7 +4,6 @@
 #ifndef ML_H
 #define ML_H
 
-#include <Arduino.h>
 #include <stdint.h>
 
 /* Model */
@@ -43,6 +42,22 @@ protected:
     * @returns True for success, False for failure.
     */
   bool ml_init(void);
+
+  /**
+    * This function applies the sigmoid logistic activation on the input.
+    * @param input The output float number that has to be activated.
+    * @returns The output of the function.
+    */
+  float sigmoid_function(float &input);
+
+  /**
+    * This function applies the MinMax normalization on the input.
+    *
+    * Changes are applied directly on the input array.
+    *
+    * @param input The pointer of the float array that has to be normalized.
+    */ 
+  void minmax_norm(float *input);
 
 private:
   /* Model loader instance */
