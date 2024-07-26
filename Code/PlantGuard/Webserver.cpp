@@ -1,6 +1,5 @@
 #include <WiFi.h>
 #include <AsyncTCP.h>
-#include <ESPAsyncWebServer.h>
 #include <SPIFFS.h>
 
 #include "Webserver.hpp"
@@ -12,9 +11,7 @@ IPAddress local_ip(192,168,1,254);
 IPAddress gateway(192,168,1,1);
 IPAddress subnet(255,255,255,0);
 
-AsyncWebServer server(80);
-
-Webserver::Webserver() {}
+Webserver::Webserver(): server(80) {}
 
 void Webserver::wifi_init(){
   WiFi.mode(WIFI_STA);
