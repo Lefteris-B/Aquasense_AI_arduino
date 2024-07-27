@@ -17,6 +17,9 @@
 /* Allow up to 5kB SRAM */
 #define ARENA_SIZE 5000
 
+#define MAX_ACCEL 1.0 // Must be set to proper limits
+#define MAX_LIGHT 1.0 // Must be set to proper limits
+
 /**
  * This class executes the ML model used for deciding DC motor movement
  */

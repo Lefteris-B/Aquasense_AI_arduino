@@ -54,9 +54,15 @@ uint32_t ML::ml_predict_time(void) {
 }
 
 void ML::input_scaler(double *input, float *output) {
-  output[0] = round(10 * ((input[0] - 0) / (sizeof(double) - 0)));
-  output[1] = 0U; // Weather
-  output[2] = round(10 * 0); // Unknown limits
+  /* Set limits */
+  input[0] = max(min(input[0], MAX_ACCEL), 0.0);
+  input[1] = max(min(input[0], 2.0), 0.0); // Three weather codes
+  input[2] = max(min(input[2], MAX_LIGHT), 0.0);
+
+  /* Scale to [0.0 - 10.0] */
+  output[0] = round(10 * ((input[0] - 0) / (MAX_ACCEL - 0)));
+  output[1] = input[1]; // Weather is already received appropriately
+  output[2] = round(10 * ((input[2] - 0) / (MAX_LIGHT - 0)));
 }
 
 float ML::sigmoid_function(float input) {
@@ -64,6 +70,7 @@ float ML::sigmoid_function(float input) {
 }
 
 void ML::minmax_norm(float *input, float *output) {
+  /* Scale to [0.0 - 1.0] */
   output[0] = (input[0] - 0)/(10 - 0);  // Wind
   output[1] = (input[1] - 0)/(2 - 0);   // Weather
   output[2] = (input[2] - 0)/(10 - 0);  // Luminance

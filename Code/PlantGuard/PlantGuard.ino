@@ -17,10 +17,9 @@ Valve valve;
 
 /* ML related */
 ML ml;
-double sample[3] = {0.0, 0.0, 0.0};
 
-/* Continuously rotate the protection 
- * This should be moved in Cover.hpp 
+/* Continuously rotate the protection shield.
+ * Should be moved over in Cover.hpp!
  */
 void cont_rotation() {
   static bool rotate_forw = true;
@@ -49,7 +48,9 @@ void setup() {
 }
 
 void loop() {
-  // Go back and forth acoording to the model
+  /* Go back and forth according to the model (assume weather is clear) */
+  /* MAX_ACCEL & MAX_LIGHT must be set in "ML.h" in order for this to work properly */
+  double sample[3] = {accel.variance(), 0.0 /* weather.code() */, 1.0 /* light.read() */};
   if (ml.ml_predict(sample) == 1) {
     cont_rotation();
   }

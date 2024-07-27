@@ -10,13 +10,10 @@ of wind velocity fluctuations and emerging meteorological conditions.
 - tflm_esp32 v1.0.0 <- Tensorflow for ESP32
 - EloquentTinyML v3.0.1 <- Abstraction Layer
 
-### **Functions**
-- **void ml_init()**
-    - Initializes the model specified in "model.h" file.
-
-- **uint8_t ml_predict(uint8_t\*)**
+### **Available Functions**
+- **uint8_t ml_predict(double\*)**
     - Executes the model and returns the result.
-    - Requires a uint8_t array as an input parameter with 3 items.
+    - Requires a float array as an input parameter with 3 items.
     - Returns either 0 or 1
 - **uint32_t ml_predict_time()**
     - Returns the latency of the last inference in microseconds.
@@ -31,13 +28,15 @@ of wind velocity fluctuations and emerging meteorological conditions.
     - Output 0 : DC Motor power decision [0/1]
 
 **Architecture**
+
+*Inference speed : < 250us!*
+
 |**Layer**| Params |
 |---------|--------|
 |Dense 64 |  256   |
 |Dense 32 |  2080  |
 |Dense 16 |  528   |
 |Dense 1  |  17    |
-*Inference speed : < 250us!*
 
 **Requirements**
 - Flash: 14kB
@@ -45,22 +44,23 @@ of wind velocity fluctuations and emerging meteorological conditions.
 
 **Example use**
 ```
-#include "ml.h"
+#include "ML.h"
 
-ML ml;
+ML ml; /* Automatically initiates */
 
-uint8_t t0[3] = {10U, 0U, 0U};  /* Outputs 1*/
+float t0[3] = {1.0, 0.0, 0.0};
 
 void setup() {
   Serial.begin(9600);
-  ml.ml_init();
+  ...
 }
 
 void loop() {
   uint8_t output = ml.ml_predict(t0);
   Serial.println(output);
-
+  ...
   Serial.print("Inference time (us): ");
   Serial.println(ml.ml_predict_time());
+  ...
 }
 ```
