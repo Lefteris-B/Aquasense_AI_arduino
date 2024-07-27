@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plantguard</title>
+    <link rel="stylesheet" href="index.scss" />
+    <link rel="icon" href="data:,">
+</head>
+
+<body>
+    <div id="stats">
+        <div class="card">
+            Temperature:
+            <output class="value" id="temperature">20 C</output>
+        </div>
+        <div class="card">
+            Humidity:
+            <output class="value" id="humidity">70%</output>
+        </div>
+        <div class="card">Wind:
+            <output class="value">8 m/s</output>
+        </div>
+        <div class="card">
+            Light Level:
+            <form method="GET" oninput="submit()">
+                <output class="value">100 lux</output>
+                <label class="action spacer">
+                    Cover
+                    <input type="checkbox" name="cover" id="cover">
+                </label>
+            </form>
+        </div>
+    </div>
+    <details>
+        <summary>
+            Settings
+        </summary>
+        <form method="GET">
+            <label>
+                Network name:
+                <input type="text" name="ssid" id="ssid">
+            </label>
+            <label>
+                Location:
+                <input type="text" name="location" id="location">
+            </label>
+            <input type="submit" hidden />
+        </form>
+    </details>
+</body>
+
+</html>

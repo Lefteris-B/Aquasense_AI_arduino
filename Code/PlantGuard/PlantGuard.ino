@@ -5,17 +5,22 @@
 #include "MoistureSensor.hpp"
 #include "TemperatureSensor.hpp"
 #include "Accelerometer.hpp"
+#include "Valve.hpp"
 
 Accelerometer accel;
 MoistureSensor moisture;
 TemperatureSensor temp;
 LightSensor light;
 
+Valve valve;
+
 void setup() {
   Serial.begin(115200);
   Wire.begin(13, 15);
 
   accel.begin(10);
+
+  valve.attach(12);
   
   cover.attachMotor(16, 17);
   cover.attachSwitch(32, 33);
