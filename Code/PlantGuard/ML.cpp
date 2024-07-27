@@ -1,5 +1,8 @@
 #include "ML.h"
 
+#include <cmath>
+#include <limits>
+
 ML::ML() {
   fail = false;
 
@@ -57,11 +60,21 @@ uint32_t ML::ml_predict_time(void) {
 }
 
 void ML::ml_set_max_accel(const double value) {
-  max_accel = value;
+  if (std::isinf(value)) {
+    max_accel = std::numeric_limits<double>::max();
+  }
+  else {
+    max_accel = max(0.0, value);
+  }
 }
 
 void ML::ml_set_max_light(const double value) {
-  max_light = value;
+  if (std::isinf(value)) {
+    max_light = std::numeric_limits<double>::max();
+  }
+  else {
+    max_light = max(0.0, value);
+  }
 }
 
 void ML::input_scaler(double *input, float *output) {
