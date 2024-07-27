@@ -20,19 +20,6 @@ Valve valve;
 /* Machine Learning */
 ML ml;
 
-/* Continuously rotate the protection shield.
- * Should be moved over in Cover.hpp!
- */
-void cont_rotation() {
-  static bool rotate_forw = true;
-  if (rotate_forw) {
-    rotate_forw = !(cover.stepPositive());
-  }
-  else {
-    rotate_forw = !(cover.stepNegative());
-  }
-}
-
 /* Light range scan function */
 void light_range_scan_task(void *) {
   while (true) {
@@ -78,7 +65,7 @@ void loop() {
   /* Go back and forth according to the model (assume weather is clear) */
   double sample[3] = {accel.variance(), 0.0 /* weather.code() */, light.read()};
   if (ml.ml_predict(sample) == 1) {
-    cont_rotation();
+    cover.stepAuto();
   }
 
   Serial.printf("Temperature: %.1lf\n", temp.read());

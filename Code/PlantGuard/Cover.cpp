@@ -95,3 +95,14 @@ bool Cover::stepNegative(int steps) {
   }
   return false;
 }
+
+void Cover::stepAuto(int steps) {
+  static bool rotate_forw = true;
+  if (rotate_forw) {
+    rotate_forw = !(cover.stepPositive());
+  }
+  else {
+    rotate_forw = !(cover.stepNegative());
+  }
+}
+
