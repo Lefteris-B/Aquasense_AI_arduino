@@ -24,14 +24,18 @@ bool ML::ml_init(void) {
   return !(fail);
 }
 
-uint8_t ML::ml_predict(uint8_t *input) {
+uint8_t ML::ml_predict(double *input) {
   if (fail == true) {
     return 0; // Don't move if something is off
   }
+  
+  /* Scale the input values */
+  float scaled[3] = {0};
+  input_scaler(input, scaled); 
 
   /* Normalize values with minmax algorithm */
   float norm[3] = {0};
-  minmax_norm(input, norm);
+  minmax_norm(scaled, norm);
 
   /* Predict and check for errors */
   if (!tf.predict(norm).isOk()) {
@@ -46,14 +50,27 @@ uint8_t ML::ml_predict(uint8_t *input) {
 }
 
 uint32_t ML::ml_predict_time(void) {
-    return tf.benchmark.microseconds();
+  return tf.benchmark.microseconds();
+}
+
+void ML::input_scaler(double *input, float *output) {
+  /* Set limits */
+  input[0] = max(min(input[0], MAX_ACCEL), 0.0);
+  input[1] = max(min(input[0], 2.0), 0.0); // Three weather codes
+  input[2] = max(min(input[2], MAX_LIGHT), 0.0);
+
+  /* Scale to [0.0 - 10.0] */
+  output[0] = round(10 * ((input[0] - 0) / (MAX_ACCEL - 0)));
+  output[1] = input[1]; // Weather is already received appropriately
+  output[2] = round(10 * ((input[2] - 0) / (MAX_LIGHT - 0)));
 }
 
 float ML::sigmoid_function(float input) {
   return (1 / (1 + exp(-input)));
 }
 
-void ML::minmax_norm(uint8_t *input, float *output) {
+void ML::minmax_norm(float *input, float *output) {
+  /* Scale to [0.0 - 1.0] */
   output[0] = (input[0] - 0)/(10 - 0);  // Wind
   output[1] = (input[1] - 0)/(2 - 0);   // Weather
   output[2] = (input[2] - 0)/(10 - 0);  // Luminance
