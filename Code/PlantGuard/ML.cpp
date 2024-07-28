@@ -1,7 +1,13 @@
 #include "ML.h"
 
+#include <cmath>
+#include <limits>
+
 ML::ML() {
   fail = false;
+
+  max_accel = 1.0;
+  max_light = 1.0;
 
   if (ml_init() == false) {
     Serial.println("ML: Initialization failure");
@@ -53,16 +59,34 @@ uint32_t ML::ml_predict_time(void) {
   return tf.benchmark.microseconds();
 }
 
+void ML::ml_set_max_accel(const double value) {
+  if (std::isinf(value)) {
+    max_accel = std::numeric_limits<double>::max();
+  }
+  else {
+    max_accel = max(0.0, value);
+  }
+}
+
+void ML::ml_set_max_light(const double value) {
+  if (std::isinf(value)) {
+    max_light = std::numeric_limits<double>::max();
+  }
+  else {
+    max_light = max(0.0, value);
+  }
+}
+
 void ML::input_scaler(double *input, float *output) {
   /* Set limits */
-  input[0] = max(min(input[0], MAX_ACCEL), 0.0);
+  input[0] = max(min(input[0], max_accel), 0.0);
   input[1] = max(min(input[0], 2.0), 0.0); // Three weather codes
-  input[2] = max(min(input[2], MAX_LIGHT), 0.0);
+  input[2] = max(min(input[2], max_light), 0.0);
 
   /* Scale to [0.0 - 10.0] */
-  output[0] = round(10 * ((input[0] - 0) / (MAX_ACCEL - 0)));
+  output[0] = round(10 * ((input[0] - 0) / (max_accel - 0)));
   output[1] = input[1]; // Weather is already received appropriately
-  output[2] = round(10 * ((input[2] - 0) / (MAX_LIGHT - 0)));
+  output[2] = round(10 * ((input[2] - 0) / (max_light - 0)));
 }
 
 float ML::sigmoid_function(float input) {

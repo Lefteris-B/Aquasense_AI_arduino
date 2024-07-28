@@ -8,26 +8,35 @@
 #include "Valve.hpp"
 #include "ML.h"
 
+/* Sensors */
 Accelerometer accel;
 MoistureSensor moisture;
 TemperatureSensor temp;
 LightSensor light;
 
+/* Mechanical parts */
 Valve valve;
 
-/* ML related */
+/* Machine Learning */
 ML ml;
 
-/* Continuously rotate the protection shield.
- * Should be moved over in Cover.hpp!
- */
-void cont_rotation() {
-  static bool rotate_forw = true;
-  if (rotate_forw) {
-    rotate_forw = !(cover.stepPositive());
-  }
-  else {
-    rotate_forw = !(cover.stepNegative());
+/* Light range scan function */
+void light_range_scan_task(void *) {
+  while (true) {
+    double max_captured_light = 0.0;
+
+    /* Perform a two-way cycle */
+    while (!(cover.stepPositive())) {
+      double curr_light = light.read();
+      max_captured_light = max(curr_light, max_captured_light);
+    }
+    while (!(cover.stepNegative())) {
+      double curr_light = light.read();
+      max_captured_light = max(curr_light, max_captured_light);
+    }
+
+    ml.ml_set_max_light(max_captured_light);
+    delay(1U * 1000U * 60U * 30U); // Wait for 30 min.
   }
 }
 
@@ -45,14 +54,18 @@ void setup() {
   light.attach(36, 10000); // 36 = VP
   temp.attach(39, 10000); // 39 = VN
   moisture.attach(34);
+
+  ml.ml_set_max_accel(1.0); // Default value
+  ml.ml_set_max_light(1.0); // Default value
+
+  xTaskCreate(light_range_scan_task, "LRS", 2048, NULL, 1, NULL);
 }
 
 void loop() {
   /* Go back and forth according to the model (assume weather is clear) */
-  /* MAX_ACCEL & MAX_LIGHT must be set in "ML.h" in order for this to work properly */
-  double sample[3] = {accel.variance(), 0.0 /* weather.code() */, 1.0 /* light.read() */};
+  double sample[3] = {accel.variance(), 0.0 /* weather.code() */, light.read()};
   if (ml.ml_predict(sample) == 1) {
-    cont_rotation();
+    cover.stepAuto();
   }
 
   Serial.printf("Temperature: %.1lf\n", temp.read());

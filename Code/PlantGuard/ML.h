@@ -40,6 +40,16 @@ public:
     */
   uint32_t ml_predict_time(void);
 
+  /**
+  * @param value Maximum expected acceleration value.
+  */
+  void ml_set_max_accel(const double value);
+
+  /**
+  * @param value Maximum expected luminance value.
+  */
+  void ml_set_max_light(const double value);
+
 protected:
   /**
     * @brief Initiates the classification model. This must be run before any other function declared here.
@@ -79,8 +89,10 @@ protected:
 private:
   /* Model loader instance */
   Eloquent::TF::Sequential<TF_NUM_OPS, ARENA_SIZE> tf;
-
   bool fail;
+
+  double max_accel;
+  double max_light;
 };
 
 #endif

@@ -43,6 +43,13 @@ public:
    */
   bool stepNegative(int steps = 1);
 
+  /**
+   * Moves the motor some steps with automatic direction.
+   * 
+   * @param steps The amount of steps to move the cover.
+   */
+  void stepAuto(int steps = 1);
+
 protected:
   /**
    * Sets the motor to rotate positively.
