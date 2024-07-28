@@ -38,5 +38,6 @@ body::before {
 }
 
 .card {
-    --bs-card-bg: none
+    --bs-card-bg: none;
+    padding-left: 0.5rem;
 }

@@ -13,19 +13,19 @@
     <div id="stats">
         <div class="card">
             Temperature:
-            <output class="value" id="temperature">20 C</output>
+            <output class="value" id="temperature">%temperature% C</output>
         </div>
         <div class="card">
             Humidity:
-            <output class="value" id="humidity">70%</output>
+            <output class="value" id="humidity">%humidity% &#37;</output>
         </div>
         <div class="card">Wind:
-            <output class="value">8 m/s</output>
+            <output class="value">%wind% m/s</output>
         </div>
         <div class="card">
             Light Level:
             <form method="GET" oninput="submit()">
-                <output class="value">100 lux</output>
+                <output class="value">%light% lux</output>
                 <label class="action spacer">
                     Cover
                     <input type="checkbox" name="cover" id="cover">
@@ -39,12 +39,12 @@
         </summary>
         <form method="GET">
             <label>
-                Network name:
-                <input type="text" name="ssid" id="ssid">
-            </label>
-            <label>
-                Location:
-                <input type="text" name="location" id="location">
+                Latitude:
+                <input type="number" min="-180" step="0.000001" max="180" name="latitude" id="latitude">
+            </label> 
+            <label class="action">
+                Longtitude:
+                <input type="number" min="-180" step="0.000001" max="180" name="longtitude" id="longtitude">
             </label>
             <input type="submit" hidden />
         </form>
