@@ -7,6 +7,8 @@
 #include "Accelerometer.hpp"
 #include "Valve.hpp"
 #include "ML.h"
+#include "Webserver.hpp"
+#include "Weather.hpp"
 
 /* Sensors */
 Accelerometer accel;
@@ -16,6 +18,8 @@ LightSensor light;
 
 /* Mechanical parts */
 Valve valve;
+Weather weather;
+Webserver webserver(&weather);
 
 /* Machine Learning */
 ML ml;
@@ -57,13 +61,16 @@ void setup() {
 
   ml.ml_set_max_accel(1.0); // Default value
   ml.ml_set_max_light(1.0); // Default value
-
   xTaskCreate(light_range_scan_task, "LRS", 2048, NULL, 1, NULL);
+
+  webserver.begin();
+  weather.request();
 }
 
 void loop() {
-  /* Go back and forth according to the model (assume weather is clear) */
-  double sample[3] = {accel.variance(), 0.0 /* weather.code() */, light.read()};
+  /* Go back and forth according to the model */
+  /* MAX_ACCEL & MAX_LIGHT must be set in "ML.h" in order for this to work properly */
+  double sample[3] = {accel.variance(), weather.weatherCode, 1.0 /* light.read() */};
   if (ml.ml_predict(sample) == 1) {
     cover.stepAuto();
   }
