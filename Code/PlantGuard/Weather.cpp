@@ -13,6 +13,7 @@ void Weather::request() {
   deserializeJson(doc, payload);
   int code = doc["current"]["weather_code"];
   weatherCode = Weather::convertCode(code);
+  windSpeed = doc["current"]["wind_speed_10m"];
   Serial.println(weatherCode);
 }
 
