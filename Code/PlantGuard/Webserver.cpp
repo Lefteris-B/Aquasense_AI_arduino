@@ -41,9 +41,9 @@ void Webserver::server_init() {
     if (request->hasParam("longtitude")) {
       AsyncWebParameter* p = request->getParam("longtitude");
       Serial.println("Longtitude: " + p->value());
-      this->weather->latitude=p->value().toDouble();
+      this->weather->longtitude=p->value().toDouble();
     }
-    request->send(SPIFFS, "/index.html", String(), false, Webserver::mainProcessor);
+    request->send(SPIFFS, "/index.html", String(), false, std::bind(&Webserver::mainProcessor, this, std::placeholders::_1));
   });
   server.serveStatic("/assets", SPIFFS, "/assets/");
   server.begin();
@@ -53,7 +53,7 @@ String Webserver::mainProcessor(const String& var) {
   if (var == "temperature") {
     return F("20");
   } else if (var == "wind") {
-    return F("8");
+    return String(weather->windSpeed);
   } else if (var == "humidity") {
     return F("70");
   } else if (var == "light") {

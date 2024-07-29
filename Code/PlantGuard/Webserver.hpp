@@ -15,7 +15,7 @@ private:
   void wifi_init();
   void server_init();
   void fs_init();
-  static String mainProcessor(const String& var);
+  String mainProcessor(const String& var);
 };
 
 #endif
